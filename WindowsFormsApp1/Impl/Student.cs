@@ -8,13 +8,25 @@ namespace WindowsFormsApp1.Impl
 {
     public class Student : Person
     {
-        public string Registration_Number { get; set; }
-        public int _Age { get; set; }
-        public List<CoursesCategoryEnum> CAN_LEARN { get; set; }
+        public string RegistrationNumber { get; set; }
 
         public Student() : base()
         {
                 
+        }
+
+        public Student(
+            string name, 
+            string surname, 
+            DateTime birthDate, 
+            List<CoursesCategoryEnum> courses, 
+            string registrationNumber) : base()
+        {
+            Name = name;
+            Surname = surname;
+            BirthDate = birthDate.Date;
+            Courses = courses;
+            RegistrationNumber = registrationNumber;
         }
     }
 }

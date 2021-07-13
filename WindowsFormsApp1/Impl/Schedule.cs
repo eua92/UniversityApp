@@ -18,5 +18,14 @@ namespace WindowsFormsApp1.Impl
         {
 
         }
+
+        public Schedule(string student, string professor, string course, DateTime calendar) 
+            : base()
+        {
+            Student = student;
+            Professor = professor;
+            Course = course;
+            Calendar = calendar;
+        }
     }
 }

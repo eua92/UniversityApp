@@ -11,6 +11,8 @@ namespace WindowsFormsApp1.Impl
     {
         public string Name { get; set; }
         public string Surname { get; set; }
+        public DateTime BirthDate { get; set; }
+        public List<CoursesCategoryEnum> Courses { get; set; }
 
         public Person() : base()
         {

@@ -12,11 +12,20 @@ namespace WindowsFormsApp1.Impl
         public string Code { get; set; }
         public string Subject { get; set; }
         public int Hours { get; set; }
-        public int Category { get; set; }
+        public CoursesCategoryEnum Category { get; set; }
 
         public Course() : base()
         {
+                
+        }
 
+        public Course(string code, string subject, int hours, CoursesCategoryEnum category) : base()
+        {
+            Code = code;
+            Subject = subject;
+            Hours = hours;
+            Category = category;
+                
         }
 
     }

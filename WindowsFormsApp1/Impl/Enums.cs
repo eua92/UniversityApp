@@ -13,4 +13,11 @@ namespace WindowsFormsApp1.Impl
         Chemistry,
         Financial
     }
+
+    public enum ProfessorRankEnum
+    {
+        Full,
+        Associate,
+        Assistant
+    }
 }
