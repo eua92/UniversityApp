@@ -74,19 +74,29 @@ namespace WindowsFormsApp1.WUI {
 
         private void ctrlSelectedStudent_TextChanged(object sender, EventArgs e)
         {
-            if (ctrlSelectedStudent.Text == String.Empty)
-            {
-                LoadCourses();
-                SelectedStudent = null;
-            }
+            RefreshStudents();
         }
 
         private void ctrlSelectedProfessor_TextChanged(object sender, EventArgs e)
         {
+            RefreshProfessors();
+        }
+
+        private void RefreshStudents()
+        {
+            if (ctrlSelectedStudent.Text == String.Empty)
+            {
+                SelectedStudent = null;
+                FilterCourses();
+            }
+        }
+
+        private void RefreshProfessors()
+        {
             if (ctrlSelectedProfessor.Text == String.Empty)
             {
-                LoadCourses();
                 SelectedProfessor = null;
+                FilterCourses();
             }
         }
 
@@ -194,44 +204,50 @@ namespace WindowsFormsApp1.WUI {
             return schedulesByWeek;
         }
 
-
-        
-
-        private void FilterCoursesByStudent()
+        private void FilterCourses()
         {
-            List<Course> filteredCourses = new List<Course>();
-            if (SelectedStudent == null)
-            {
-                dataGridViewCourses.DataSource = NewUniversity.Courses; 
-            }
-            else
-            {
-                SelectedStudent.Courses.ForEach(category => filteredCourses.AddRange(NewUniversity.Courses.FindAll(x => x.Category == category)));
-                dataGridViewCourses.DataSource = filteredCourses;
-            }
-        }
+            List<Course> filteredCoursesByStudent = new List<Course>();
+            List<Course> filteredCoursesByProfessor = new List<Course>();
 
-        private void FilterCoursesByProfessor()
-        {
             List<Course> filteredCourses = new List<Course>();
-            if (SelectedProfessor == null)
+
+            if (SelectedStudent == null && SelectedProfessor == null)
             {
                 dataGridViewCourses.DataSource = NewUniversity.Courses;
             }
+            else if (SelectedStudent != null && SelectedProfessor == null)
+            {
+                SelectedStudent.Courses.ForEach(category => filteredCoursesByStudent.AddRange(NewUniversity.Courses.FindAll(x => x.Category == category)));
+                dataGridViewCourses.DataSource = filteredCoursesByStudent;
+            }
+            else if (SelectedStudent == null && SelectedProfessor != null)
+            {
+                SelectedProfessor.Courses.ForEach(category => filteredCoursesByProfessor.AddRange(NewUniversity.Courses.FindAll(x => x.Category == category)));
+                dataGridViewCourses.DataSource = filteredCoursesByProfessor;
+            }
             else
             {
-                SelectedProfessor.Courses.ForEach(category => filteredCourses.AddRange(NewUniversity.Courses.FindAll(x => x.Category == category)));
+                SelectedStudent.Courses.ForEach(category => filteredCoursesByStudent.AddRange(NewUniversity.Courses.FindAll(x => x.Category == category)));
+                SelectedProfessor.Courses.ForEach(category => filteredCoursesByProfessor.AddRange(NewUniversity.Courses.FindAll(x => x.Category == category)));
+                filteredCourses = filteredCoursesByStudent.FindAll(x => x.Category == filteredCoursesByProfessor[0].Category);
                 dataGridViewCourses.DataSource = filteredCourses;
             }
         }
 
+
         private void RemoveSchedule()
         {
-            var selectedSchedule = dataGridViewSchedule.SelectedRows[0].DataBoundItem as Schedule;
-            NewUniversity.Schedules.Remove(NewUniversity.Schedules.First(x => x.ID == selectedSchedule.ID));
+            if (dataGridViewSchedule.Rows.Count == 1)
+            {
+                MessageBox.Show("Please add a schedule");
+            } else
+            {
+                var selectedSchedule = dataGridViewSchedule.SelectedRows[0].DataBoundItem as Schedule;
+                NewUniversity.Schedules.Remove(NewUniversity.Schedules.First(x => x.ID == selectedSchedule.ID));
+            }
+           
         }
-
-        
+    
 
         private void LoadStudentForm()
         {
@@ -243,7 +259,7 @@ namespace WindowsFormsApp1.WUI {
                 case DialogResult.Cancel:
                     SelectedStudent = studentForm.SelectedStudent;
                     ctrlSelectedStudent.Text = String.Format("{0} {1}", SelectedStudent.Name, SelectedStudent.Surname);
-                    FilterCoursesByStudent();
+                    FilterCourses();
                     break;
                 default:
                     break;
@@ -260,14 +276,12 @@ namespace WindowsFormsApp1.WUI {
                 case DialogResult.Cancel:
                     SelectedProfessor = professorForm.SelectedProfessor;
                     ctrlSelectedProfessor.Text = String.Format("{0} {1}", SelectedProfessor.Name, SelectedProfessor.Surname);
-                    FilterCoursesByProfessor();
+                    FilterCourses();
                     break;
                 default:
                     break;
             }
         }
-
-       
     }
 }
 

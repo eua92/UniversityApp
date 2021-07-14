@@ -55,11 +55,11 @@
     <Compile Include="Base\Entity.cs" />
     <Compile Include="Impl\Initialization.cs" />
     <Compile Include="Impl\Person.cs" />
-    <Compile Include="WUI\Form1.cs">
+    <Compile Include="WUI\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="WUI\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="WUI\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Impl\Course.cs" />
     <Compile Include="Impl\Enums.cs" />
@@ -82,8 +82,8 @@
     <Compile Include="WUI\StudentForm.Designer.cs">
       <DependentUpon>StudentForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="WUI\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="WUI\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WUI\ProfessorForm.resx">
       <DependentUpon>ProfessorForm.cs</DependentUpon>

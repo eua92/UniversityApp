@@ -14,7 +14,9 @@ namespace WindowsFormsApp1
     public partial class ProfessorForm : Form
     {
         public University NewUniversity = new University();
-        public Professor SelectedProfessor { get; set; }
+        public Professor SelectedProfessor { 
+            get => dataGridViewProfessors.SelectedRows[0].DataBoundItem as Professor;  
+            set => SelectedProfessor = value; }
 
         public ProfessorForm()
         {
@@ -31,6 +33,11 @@ namespace WindowsFormsApp1
             CloseForm();
         }
 
+        private void dataGridViewProfessors_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            FindCourses();
+        }
+
         private void ProfessorForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             CloseForm();
@@ -40,12 +47,25 @@ namespace WindowsFormsApp1
         {         
             dataGridViewProfessors.DataSource = NewUniversity.Professors;
             dataGridViewProfessors.Columns["ID"].Visible = false;
+            dataGridViewProfessors.Columns["BirthDate"].DefaultCellStyle.Format = "dd/MM/yyyy";
+
+            FindCourses();
         }   
 
         private void CloseForm()
-        {
-            SelectedProfessor = dataGridViewProfessors.SelectedRows[0].DataBoundItem as Professor;
+        {          
             Close();
-        }     
+        }
+
+        private void FindCourses()
+        {
+            string courses = "";
+            foreach (var item in SelectedProfessor.Courses)
+            {
+                courses += String.Format("{0}", item);
+            }
+
+            ctrlCourses.Text = courses;
+        }      
     }
 }
